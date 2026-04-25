@@ -4,20 +4,43 @@ const express = require('express');
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const app = express();
 
-// 🚀 BOT LOGIC
+app.use(express.json());
 
+// 🚀 START MESSAGE
 bot.start((ctx) => {
-  ctx.reply("🔥 Bot is live! Click below 👇", {
+  ctx.reply(`🔓 PREMIUM CHANNEL ACCESS
+
+Unlock exclusive access to our
+🔥 Tamil + Bingeme Premium Library
+
+━━━━━━━━━━━━━━━
+✅ 4,000+ Premium Videos & Files
+✅ Daily New Content Updates
+✅ Instant Access After Payment
+✅ Secure Payment via Razorpay
+━━━━━━━━━━━━━━━
+
+💰 Offer Price: ₹299 ONLY!
+
+👇 Choose an option below`, {
     reply_markup: {
       inline_keyboard: [
-        [{ text: "💳 Buy Now", callback_data: "buy" }]
+        [
+          { text: "💳 Buy Now", callback_data: "buy" },
+          { text: "📺 Demo", url: "https://your-demo-link.com" }
+        ]
       ]
     }
   });
 });
 
+// 💳 BUY BUTTON
 bot.action('buy', (ctx) => {
-  ctx.reply("Click to pay 👇", {
+  ctx.reply(`💳 PAYMENT LINK READY
+
+💰 Amount: ₹299
+
+👇 Click below to pay`, {
     reply_markup: {
       inline_keyboard: [
         [{ text: "💳 Pay Now", url: "https://rzp.io/l/yourlink" }],
@@ -27,22 +50,23 @@ bot.action('buy', (ctx) => {
   });
 });
 
+// ✅ PAID BUTTON
 bot.action('paid', (ctx) => {
-  ctx.reply("Send payment screenshot or ID");
+  ctx.reply(`📩 Send payment screenshot or ID for verification.`);
 });
 
 // 🌐 WEBHOOK ROUTE
-app.use(express.json());
 app.use(bot.webhookCallback('/webhook'));
 
-// 🔥 PORT FIX (IMPORTANT)
+// 🔥 PORT (IMPORTANT)
 const PORT = process.env.PORT || 3000;
 
+// 🚀 START SERVER
 app.listen(PORT, '0.0.0.0', async () => {
   console.log(`Server running on port ${PORT}`);
 
   const url = process.env.RENDER_EXTERNAL_URL;
 
-  await bot.telegram.deleteWebhook(); // remove old
+  await bot.telegram.deleteWebhook();
   await bot.telegram.setWebhook(`${url}/webhook`);
 });
