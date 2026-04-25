@@ -36,7 +36,7 @@ bot.start((ctx) => {
 bot.action('buy', (ctx) => {
   ctx.reply(`💳 ZENZE ROX SECURE CHECKOUT
 
-Pay easily using:
+Choose your preferred payment method:
 • Google Pay / PhonePe / Paytm  
 • UPI Apps  
 • Debit / Credit Card  
@@ -46,7 +46,9 @@ Pay easily using:
 🔐 Secured via Razorpay  
 ━━━━━━━━━━━━━━━
 
-👇 Click below to proceed`, {
+⚡ Instant access after successful payment
+
+👇 Tap below to proceed`, {
     reply_markup: {
       inline_keyboard: [
         [{ text: "💳 Pay Now", url: "https://rzp.io/l/yourlink" }],
@@ -56,22 +58,28 @@ Pay easily using:
   });
 });
 
-// ✅ PAID BUTTON (SCREENSHOT STEP)
+// ✅ PAID BUTTON → SCREENSHOT CHANNEL
 bot.action('paid', (ctx) => {
   ctx.reply(`📩 PAYMENT VERIFICATION
 
-Please send:
-• Payment Screenshot  
-OR  
-• Payment ID  
+To complete your access:
 
-⏳ After verification, you will receive access 🔓`);
+👉 Click the button below  
+👉 Send your payment screenshot in the channel  
+
+⏳ After verification, you will receive access 🔓`, {
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: "📤 Submit Screenshot", url: "https://t.me/+CYfUHYeI87M0YWM1" }]
+      ]
+    }
+  });
 });
 
 // 🌐 WEBHOOK ROUTE
 app.use(bot.webhookCallback('/webhook'));
 
-// 🔥 PORT LINE (THIS IS WHAT YOU WANT)
+// 🔥 PORT
 const PORT = process.env.PORT || 3000;
 
 // 🚀 START SERVER
