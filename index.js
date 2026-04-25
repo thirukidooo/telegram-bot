@@ -1,36 +1,23 @@
 const { Telegraf } = require('telegraf');
+const express = require('express');
 
-// 👉 PASTE YOUR BOT TOKEN BELOW (from BotFather)
-const bot = new Telegraf('8769096566:AAH5dKblavQA9tWpl1vg24dJRMwdHxJKDk0');
+const bot = new Telegraf(process.env.BOT_TOKEN);
+const app = express();
 
-// 🚀 START COMMAND
+// 🚀 BOT LOGIC
+
 bot.start((ctx) => {
-  ctx.reply(`🔓 PREMIUM CHANNEL ACCESS
-
-━━━━━━━━━━━━━━━
-✅ 45+ Exclusive Videos
-✅ Regular Updates
-✅ Instant Access
-━━━━━━━━━━━━━━━
-
-💰 Price: ₹199
-
-👇 Click below to continue`, {
+  ctx.reply("🔥 Bot is live! Click below 👇", {
     reply_markup: {
       inline_keyboard: [
-        [{ text: "🔥 Buy Now", callback_data: "buy" }]
+        [{ text: "💳 Buy Now", callback_data: "buy" }]
       ]
     }
   });
 });
 
-// 💳 BUY BUTTON
 bot.action('buy', (ctx) => {
-  ctx.reply(`💳 PAYMENT PAGE
-
-Secure payment via Razorpay 🔐
-
-Click below to pay 👇`, {
+  ctx.reply("Click to pay 👇", {
     reply_markup: {
       inline_keyboard: [
         [{ text: "💳 Pay Now", url: "https://rzp.io/l/yourlink" }],
@@ -40,22 +27,22 @@ Click below to pay 👇`, {
   });
 });
 
-// ✅ PAID BUTTON
 bot.action('paid', (ctx) => {
-  ctx.reply(`📩 PAYMENT VERIFICATION
-
-Send your:
-✅ Payment ID or Screenshot
-
-⏳ After verification, you’ll get access 🔓`);
+  ctx.reply("Send payment screenshot or ID");
 });
 
-// ❌ ERROR HANDLING
-bot.catch((err) => {
-  console.log('Error:', err);
+// 🌐 WEBHOOK ROUTE
+app.use(express.json());
+app.use(bot.webhookCallback('/webhook'));
+
+// 🔥 PORT FIX (IMPORTANT)
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, '0.0.0.0', async () => {
+  console.log(`Server running on port ${PORT}`);
+
+  const url = process.env.RENDER_EXTERNAL_URL;
+
+  await bot.telegram.deleteWebhook(); // remove old
+  await bot.telegram.setWebhook(`${url}/webhook`);
 });
-
-// ▶️ START BOT
-bot.launch();
-
-console.log("Bot running...");
