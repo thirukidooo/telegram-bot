@@ -28,6 +28,9 @@ Unlock exclusive access to our
         [
           { text: "💳 Buy Now", callback_data: "buy" },
           { text: "📺 Demo", url: "https://your-demo-link.com" }
+        ],
+        [
+          { text: "❓ Help", callback_data: "help" }
         ]
       ]
     }
@@ -38,7 +41,15 @@ Unlock exclusive access to our
 bot.action('buy', (ctx) => {
   ctx.reply(`💳 PAYMENT LINK READY
 
+Pay securely using:
+• UPI (GPay, PhonePe, Paytm)
+• Debit / Credit Card
+• Net Banking
+
+━━━━━━━━━━━━━━━
 💰 Amount: ₹299
+🔐 Secure Payment via Razorpay
+━━━━━━━━━━━━━━━
 
 👇 Click below to pay`, {
     reply_markup: {
@@ -52,13 +63,20 @@ bot.action('buy', (ctx) => {
 
 // ✅ PAID BUTTON
 bot.action('paid', (ctx) => {
-  ctx.reply(`📩 Send payment screenshot or ID for verification.`);
+  ctx.reply(`📩 Send payment screenshot or payment ID for verification.`);
+});
+
+// ❓ HELP BUTTON
+bot.action('help', (ctx) => {
+  ctx.reply(`❓ Need Help?
+
+Please contact admin. We will assist you.`);
 });
 
 // 🌐 WEBHOOK ROUTE
 app.use(bot.webhookCallback('/webhook'));
 
-// 🔥 PORT (IMPORTANT)
+// 🔥 PORT
 const PORT = process.env.PORT || 3000;
 
 // 🚀 START SERVER
@@ -67,6 +85,6 @@ app.listen(PORT, '0.0.0.0', async () => {
 
   const url = process.env.RENDER_EXTERNAL_URL;
 
-  await bot.telegram.deleteWebhook();
+  // SET WEBHOOK
   await bot.telegram.setWebhook(`${url}/webhook`);
 });
